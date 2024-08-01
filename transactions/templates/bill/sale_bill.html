@@ -1,0 +1,184 @@
+{% extends bill_base %}
+{% load static %}
+
+{% block title %} Faktura za prodaju br: {{ bill.billno }}{% endblock title %}
+
+{% block content %}
+    
+    <div style="color:#ea2088; font-style: bold; font-size: 3rem;  border-bottom: 1px solid white;">Faktura za prodaju br: {{ bill.billno }}</div>
+
+    <br><br>
+
+    <form method="post">
+    {% csrf_token %}
+
+        <div class="bg">
+
+            <br><br>
+
+            <div id="printArea" class="bg">
+
+                <table class="outer-box inner-box" style="width: 800px; margin-left: auto; margin-right: auto;">
+                    <tbody>
+                    
+                        <tr style="height: 1px;">
+                            <td> <p style="text-align: center;">POREZNA FAKTURA - PRODAJA</p> </td>
+                        </tr>
+                    
+                        <tr style="text-align: center;">
+                            <td >
+                                <span style="font-size: 350%;">Kompanija</span> <br>
+                                <span style="font-size: 120%; font-weight: bold; text-decoration: underline;">DEALERI U : Proizvodi</span> <br>
+                                <span style="text-decoration: underline; font-weight: bold;">REGISTROVANA ADRESA :</span> Adresa Linija 1<br>Adresa Linija 2<br>
+                                <span style="text-decoration: underline; font-weight: bold;">EMAIL : email</span> <br><br>
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                            <table class="outer-box" style="width: 800px; margin-left: auto; margin-right: auto;">
+                                <tbody>
+                                    <tr>
+                                        <td class="inner-box" style="text-align: center; font-weight: bold;" colspan="3">GSTIN BROJ - 123456789ABCDEF</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 50%; font-weight: bold;">&nbsp;IME PRIMALCA / KUPCA</td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;BROJ FAKTURE</td>
+                                        <td class="inner-box" style="width: 25%;">&nbsp;{{ bill.billno }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 50%;">&nbsp;{{ bill.name }}</td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;DATUM</td>
+                                        <td class="inner-box" style="width: 25%;">&nbsp;{{ bill.time.date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 50%;" rowspan="3">{{ bill.address|linebreaks }}</td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;EWAY BROJ</td>
+                                        <td class="inner-box align-middle" style="width: 25%;"> <input type="text" name="eway" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.eway %}{{ billdetails.eway }}{% endif %}"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;VOZILO BROJ</td>
+                                        <td class="inner-box align-middle" style="width: 25%;"> <input type="text" name="veh" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.veh %}{{ billdetails.veh }}{% endif %}"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;ODREDISTE</td>
+                                        <td class="inner-box align-middle" style="width: 25%;"> <input type="text" name="destination" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.destination %}{{ billdetails.destination }}{% endif %}"> </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;GSTIN Broj : {{ bill.gstin }} </td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;PO BROJ &amp; DATUM</td>
+                                        <td class="inner-box align-middle" style="width: 25%;"> <input type="text" name="po" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.po %}{{ billdetails.po }}{% endif %}"> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <table class="outer-box" style="width: auto; margin-left: auto; margin-right: auto;">
+                                <tbody>
+                                    <tr>
+                                        <td class="inner-box" style="width: 5%; font-weight: bold; text-align: center;">&nbsp;SL BR</td>
+                                        <td class="inner-box" style="width: 30%; font-weight: bold; text-align: center;">OPIS ROBE</td>
+                                        <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">&nbsp;HSN/SAC</td>
+                                        <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">KOL MTS</td>
+                                        <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">CENA PMT</td>
+                                        <td class="inner-box" style="width: 12%; font-weight: bold; text-align: center;">IZNOS U RSD</td>
+                                        <td class="inner-box" style="width: 5%; font-weight: bold; text-align: center;">PS</td>
+                                    </tr>
+                                    {% for item in items %}
+                                        <tr style="height: auto;">
+                                            <td class="inner-box" style="width: 5%;">&nbsp; {{ forloop.counter }}</td>
+                                            <td class="inner-box" style="width: 30%;">&nbsp; {{ item.stock.name }}</td>
+                                            <td class="inner-box" style="width: 12%;"></td>
+                                            <td class="inner-box" style="width: 12%;">&nbsp; {{ item.quantity }}</td>
+                                            <td class="inner-box" style="width: 12%;">&nbsp; {{ item.perprice }}</td>
+                                            <td class="inner-box" style="width: 12%;">&nbsp;{{ item.totalprice }}</td>
+                                            <td class="inner-box" style="width: 5%;">&nbsp;0</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <table class="outer-box inner-box" style="width: 800px; margin-left: auto; margin-right: auto;">
+                                <tbody>
+                                    <tr>
+                                        <td class="inner-box" style="width: 35%; text-align: center;" rowspan="6">
+                                            <p> <span style="font-weight: bold;">BANKA PODACI <br> kompanija</span> <br>
+                                                naziv banke <br> BROJ RAČUNA-000 000 000 000 000 <br> IFSC KOD - ABCD 000 0000 <br> FILIJALA <br> TEL BROJ - 0123456789</p>
+                                        </td>
+                                        <td class="inner-box" style="width: 30%; font-weight: bold;">&nbsp;CGST @ 2.5%</td>
+                                        <td class="inner-box align-middle" style="width: 30%;">&nbsp; <input type="text" name="cgst" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.cgst %}{{ billdetails.cgst }}{% endif %}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;SGST @ 2.5%</td>
+                                        <td class="inner-box align-middle">&nbsp; <input type="text" name="sgst" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.sgst %}{{ billdetails.sgst }}{% endif %}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;IGST @ 5% </td>
+                                        <td class="inner-box align-middle">&nbsp; <input type="text" name="igst" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.igst %}{{ billdetails.igst }}{% endif %}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;CESS @ 400/PMT </td>
+                                        <td class="inner-box align-middle">&nbsp; <input type="text" name="cess" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.cess %}{{ billdetails.cess }}{% endif %}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;TCS @ 1%</td>
+                                        <td class="inner-box align-middle">&nbsp; <input type="text" name="tcs" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.tcs %}{{ billdetails.tcs }}{% endif %}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="font-weight: bold;">&nbsp;UKUPNO</td>
+                                        <td class="inner-box align-middle">&nbsp; <input type="text" name="total" class="align-middle" style="border: 0; overflow: hidden;" value="{% if billdetails.total %}{{ billdetails.total }}{% endif %}"> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align: right;">
+                                <span style="font-weight: bold;">ZA KOMAPNIJU <br><br><br><br> Potpis</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align: center;">
+                                ZAVRŠNI TEKST
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <br><br>
+
+        </div>
+
+        <br><br>
+
+        <div class="wrapper">
+            <button class="center ghost-blue" onclick="printpage('printArea')">Štampaj</button>
+            <button class="center ghost-green" type="submit">Sačuvaj Nacrt</button>
+            <a href="{% url 'sales-list' %}" class="btn center ghost-button">Povratak</a>
+        </div>
+    
+    </form>
+    
+    <script>
+        function printpage(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }       
+    </script>
+
+{% endblock %}

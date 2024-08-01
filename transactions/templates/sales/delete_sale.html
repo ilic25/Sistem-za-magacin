@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %} Obriši Prodaju {% endblock title %}
+{% block content %}
+
+<form method="post">
+  {% csrf_token %}
+
+  <fieldset class="form-group">
+    <div
+      style="
+        color: #ea2088;
+        font-style: bold;
+        font-size: 3rem;
+        border-bottom: 1px solid white;
+      "
+    >
+      Obriši Račun o Prodaji
+    </div>
+    <br />
+    <h2>
+      Da li ste sigurni da želite da obrišete Račun o Prodaji br: {{
+      object.billno }}?
+    </h2>
+  </fieldset>
+
+  <div class="form-group">
+    <button type="submit" class="btn ghost-red">Da, Obriši</button>
+    <a href="{% url 'sales-list' %}" class="btn ghost-button">Otkazivanje</a>
+  </div>
+</form>
+
+{% endblock content %}

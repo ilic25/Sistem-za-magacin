@@ -1,0 +1,45 @@
+<!-- prettier ignore -->
+{% extends "base.html" %}
+
+{% block title %} O Nama {% endblock title %}
+
+{% block content %}
+    
+    {% if not user.is_authenticated %}
+        <br />
+        <a href="{% url 'home' %}" class="btn ghost-button">Vrati se Nazad</a>
+    {% endif %}
+
+    <div class="align-middle" style="color: #ea2088; font-style: bold; font-size: 3rem;">
+        Invi
+    </div>
+    <div class="align-middle" style="color: #fff;">
+        Sistem za Upravljanje Magacinom
+    </div>
+    <br /><br />
+
+    <div class="align-middle">
+        <h2 style="color: #ea2088;">| O Nama |</h2>
+        <br />
+        <p>
+            Invi je jednostavan softver za upravljanje magacinom kreiran za potrebe jedne kompanije.
+            Softver je sposoban da prati ulazne i izlazne zalihe sa dinamički generisanim računom.
+            Svaki dobavljač ima profil gde može da vidi istoriju svojih transakcija sa kompanijom.
+        </p>
+        <br />
+    </div>
+    
+    <h2 style="color: #ea2088;" class="align-middle">| Karakteristike |</h2>
+    <br />
+    <ul style="display: table; margin: 0 auto;">                
+        <li>Interaktivni grafik za prikaz trenutnih dostupnih zaliha</li>
+        <li>Detalji zaliha kao što su trenutno dostupne zalihe se održavaju</li>
+        <li>Ulazne transakcije se vrše putem kupovine</li>
+        <li>Izlazne transakcije se vrše putem prodaje</li>
+        <li>Sve transakcije izvršene putem softvera se beleže</li>
+        <li>Račun se dinamički generiše i može se štampati</li>
+        <li>Odvojeni profili se održavaju za dobavljače</li>
+    </ul>  
+    <br />
+
+{% endblock content %}

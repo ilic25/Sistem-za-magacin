@@ -75,6 +75,7 @@ class SaleBill(models.Model):
     address = models.CharField(max_length=200)
     email = models.EmailField(max_length=254)
     gstin = models.CharField(max_length=8)
+    mb = models.CharField(max_length=20, blank=True, null=True) 
 
     def __str__(self):
 	    return "Bill no: " + str(self.billno)
